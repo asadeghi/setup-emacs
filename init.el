@@ -33,11 +33,13 @@
 (tool-bar-mode -1)
 ;;(helm-mode 1)
 ;;(load-theme 'solarized-[light|dark] t)
-(load-theme 'solarized-dark t)
+(load-theme 'solarized-light t)
 (setq inhibit-startup-message t
   inhibit-startup-echo-area-message t) 
 
 ;; Shortcuts
+;;(global-set-key [(control \5)] (lambda () (interactive) (switch-to-buffer "*scratch*")))
+(global-set-key [f1] (lambda () (interactive) (switch-to-buffer "*scratch*")))
 (global-set-key [f5] 'helm-mini)
 (global-set-key [f7] 'start-kbd-macro)
 (global-set-key [f8] 'end-kbd-macro)
