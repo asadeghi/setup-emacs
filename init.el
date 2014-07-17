@@ -28,7 +28,8 @@
                       sml-mode scala-mode
                       markdown-mode yaml-mode
                       scss-mode rainbow-mode web-mode
-                      solarized-theme)
+                      solarized-theme
+                      ace-jump-mode)
   "A list of packages to ensure are installed at launch.")
 (dolist (p my-packages)
   (when (not (package-installed-p p))
@@ -55,6 +56,7 @@
 (global-set-key [f7] 'start-kbd-macro)
 (global-set-key [f8] 'end-kbd-macro)
 (global-set-key [f9] 'call-last-kbd-macro)
+(define-key global-map (kbd "C-0") 'ace-jump-mode)
 
 ;; Scroll one line at a time with mouse scroll wheel, no acceleration
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control) . nil)))
