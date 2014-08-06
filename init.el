@@ -62,6 +62,9 @@
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control) . nil)))
 (setq mouse-wheel-progressive-speed nil)
 
+;; Disable SASS auto-compilation
+(setq scss-compile-at-save nil)
+
 ;; Set buffer title
 (setq-default frame-title-format
    (list '((buffer-file-name " %f"
