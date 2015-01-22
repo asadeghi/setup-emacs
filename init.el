@@ -29,7 +29,8 @@
                       markdown-mode yaml-mode
                       scss-mode rainbow-mode web-mode
                       solarized-theme
-                      ace-jump-mode)
+                      ace-jump-mode
+                      go-mode)
   "A list of packages to ensure are installed at launch.")
 (dolist (p my-packages)
   (when (not (package-installed-p p))
@@ -89,3 +90,21 @@
     helm-c-source-recentf
     helm-c-source-ls-git)
   "*helm mini*"))
+
+;; -- Find emacs init file. You can also use: describe-variable user-init-file
+(defun find-user-init-file ()
+  "Edit the `user-init-file', in another window."
+  (interactive)
+  (find-file-other-window user-init-file))
+
+;; -- Additional packages
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/"))
+
+;; -- Batch-Mode
+(add-to-list 'auto-mode-alist '("\\.bat\\'" . batch-mode))
+
+;; -- VB.NET Mode
+(autoload 'vbnet-mode "vbnet-mode.el" "Mode for editing VB.NET code." t)
+(setq auto-mode-alist (append '(("\\.\\(frm\\|bas\\|cls\\|vb\\)$" .
+                              vbnet-mode)) auto-mode-alist))
+
