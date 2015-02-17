@@ -9,28 +9,25 @@
 ;;                (cons "Input your LDAP UID !"
 ;;                      (base64-encode-string "LOGIN:PASSWORD")))))
 
-(require 'package)
-
 ;; Add package repos
-;; (add-to-list 'package-archives
-;;              '("marmalade" . "http://marmalade-repo.org/packages/") t)
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(require 'package)
 (package-initialize)
+(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/") t)
+;;(add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
 
 (when (not package-archive-contents)
   (package-refresh-contents))
 
-;; Add in your own as you wish:
-(defvar my-packages '(auto-complete smartparens
+(defvar my-packages '(smartparens company
                       helm helm-ls-git
-                      clojure-mode clojure-test-mode
-                      sml-mode scala-mode
+                      sml-mode
                       markdown-mode yaml-mode
                       scss-mode rainbow-mode web-mode
-                      solarized-theme
                       ace-jump-mode
-                      go-mode)
+                      solarized-theme
+                      go-mode 
+                      cider)
   "A list of packages to ensure are installed at launch.")
 (dolist (p my-packages)
   (when (not (package-installed-p p))
@@ -49,6 +46,7 @@
 (load-theme 'solarized-light t)
 (setq inhibit-startup-message t
   inhibit-startup-echo-area-message t) 
+(add-hook 'after-init-hook 'global-company-mode)
 
 ;; Shortcuts
 ;;(global-set-key [(control \5)] (lambda () (interactive) (switch-to-buffer "*scratch*")))
@@ -62,6 +60,10 @@
 ;; Scroll one line at a time with mouse scroll wheel, no acceleration
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control) . nil)))
 (setq mouse-wheel-progressive-speed nil)
+
+;; Tramp setup
+;; C-x C-f /username@remoteserver:/path/to/file
+(setq tramp-default-method "ssh")
 
 ;; Disable SASS auto-compilation
 (setq scss-compile-at-save nil)
@@ -98,7 +100,7 @@
   (find-file-other-window user-init-file))
 
 ;; -- Additional packages
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/"))
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/lisp"))
 
 ;; -- Batch-Mode
 (add-to-list 'auto-mode-alist '("\\.bat\\'" . batch-mode))
@@ -108,3 +110,7 @@
 (setq auto-mode-alist (append '(("\\.\\(frm\\|bas\\|cls\\|vb\\)$" .
                               vbnet-mode)) auto-mode-alist))
 
+;; -- Cider (clojure-emacs) setup
+(add-hook 'cider-mode-hook #'eldoc-mode)
+(setq nrepl-hide-special-buffers t)
+(add-hook 'cider-repl-mode-hook #'smartparens-strict-mode)

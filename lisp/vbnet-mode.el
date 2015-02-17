@@ -791,7 +791,7 @@ alist. Leaves point after the \"End Namespace\", if it exists.
               ;; there may be multiple children; add them all
               (if child-menu
                   (mapcar
-                   '(lambda (item)
+                   #'(lambda (item)
                       (push item submenu))
                    child-menu))
               (setq suppress-next t)))))
@@ -2574,7 +2574,7 @@ Next $1
             ;; Insert the snippets from above into the table if they
             ;; are not already defined.
             (mapcar
-             '(lambda (item)
+             #'(lambda (item)
                 (let* ((full-key (car item))
                        (existing-snip
                         (yas/snippet-table-fetch snippet-table full-key)))
