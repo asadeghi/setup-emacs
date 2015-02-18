@@ -104,9 +104,6 @@
 ;; -- Additional packages
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/lisp"))
 
-;; -- Batch-Mode
-(add-to-list 'auto-mode-alist '("\\.bat\\'" . batch-mode))
-
 ;; -- VB.NET Mode
 (autoload 'vbnet-mode "vbnet-mode.el" "Mode for editing VB.NET code." t)
 (setq auto-mode-alist (append '(("\\.\\(frm\\|bas\\|cls\\|vb\\)$" .
