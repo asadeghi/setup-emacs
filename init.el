@@ -64,6 +64,8 @@
 ;; Tramp setup
 ;; C-x C-f /username@remoteserver:/path/to/file
 (setq tramp-default-method "ssh")
+;;(setq tramp-debug-buffer t)
+;;(setq tramp-verbose 10)
 
 ;; Disable SASS auto-compilation
 (setq scss-compile-at-save nil)
@@ -109,6 +111,10 @@
 (autoload 'vbnet-mode "vbnet-mode.el" "Mode for editing VB.NET code." t)
 (setq auto-mode-alist (append '(("\\.\\(frm\\|bas\\|cls\\|vb\\)$" .
                               vbnet-mode)) auto-mode-alist))
+
+;; -- Smartparens setup
+(require `smartparens-config)
+(smartparens-global-mode)
 
 ;; -- Cider (clojure-emacs) setup
 (add-hook 'cider-mode-hook #'eldoc-mode)
