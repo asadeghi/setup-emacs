@@ -31,13 +31,13 @@
                       rainbow-mode ;; Render RGB strings with color
                       web-mode
                       solarized-theme
-;;                      go-mode 
                       cider
                       ac-cider
+;;                      go-mode
 ;;                      magit
 ;;                      clj-refactor
+;;                      itail                     
                       iedit
-                      itail
                       ace-jump-mode
                       jump-char
                       s
@@ -56,8 +56,6 @@
 (setq-default tab-width 4)
 (setq column-number-mode t)
 (tool-bar-mode -1)
-;;(load-theme 'solarized-[light|dark] t)
-(load-theme 'solarized-light t)
 (setq inhibit-startup-message t
   inhibit-startup-echo-area-message t) 
 (add-hook 'after-init-hook 'global-company-mode)
@@ -66,11 +64,26 @@
 ;; Shortcuts
 ;;(global-set-key [(control \5)] (lambda () (interactive) (switch-to-buffer "*scratch*")))
 (global-set-key [f1] (lambda () (interactive) (switch-to-buffer "*scratch*")))
+(global-set-key [f2] (lambda () (interactive) (find-file "~/Desktop/notes.txt")))
 (global-set-key [f5] 'projectile-find-file)
 (global-set-key [f7] 'start-kbd-macro)
 (global-set-key [f8] 'end-kbd-macro)
 (global-set-key [f9] 'call-last-kbd-macro)
 (define-key global-map (kbd "C-0") 'ace-jump-mode)
+
+;; Solarized theme setup. Enable toggling between light and dark themes with F12.
+;;(load-theme 'solarized-[light|dark] t)
+(defun toggle-dark-light-theme ()
+  (interactive)
+  (let ((is-light (find 'solarized-light custom-enabled-themes)))
+    (dolist (theme custom-enabled-themes)
+      (disable-theme theme))
+    (load-theme (if is-light 'solarized-dark 'solarized-light) t)))
+
+(if window-system
+    (progn
+      (global-set-key (kbd "<f12>") 'toggle-dark-light-theme)
+      (load-theme 'solarized-dark t)))
 
 ;; Scroll one line at a time with mouse scroll wheel, no acceleration
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control) . nil)))
@@ -93,28 +106,28 @@
 ;; Shorthand for questions
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-;; -- Find emacs init file. You can also use: describe-variable user-init-file
+;; Find emacs init file. You can also use: describe-variable user-init-file
 (defun find-user-init-file ()
   "Edit the `user-init-file', in another window."
   (interactive)
   (find-file-other-window user-init-file))
 
-;; -- Additional package path
+;; Additional package path
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/modules"))
 
-;; -- VB.NET Mode
+;; VB.NET Mode
 (autoload 'vbnet-mode "vbnet-mode.el" "Mode for editing VB.NET code." t)
 (setq auto-mode-alist (append '(("\\.\\(frm\\|bas\\|cls\\|vb\\)$" .
                               vbnet-mode)) auto-mode-alist))
 
-;; -- Enable recentf minor mode to track recently opened files.
+;; Enable recentf minor mode to track recently opened files.
 (recentf-mode 1)
 (global-set-key (kbd "C-x C-r") 'recentf-open-files)
 
-;; -- Enable iedit minor mode - allows editing of one occurance of some text in buffer.
+;; Enable iedit minor mode - allows editing of one occurance of some text in buffer.
 (require 'iedit) ;; C-; search/replace
 
-;; -- Support for loading & saving window/buffer config
+;; Support for loading & saving window/buffer config
 (require 'workgroups)
 (setq wg-prefix-key (kbd "C-x w")
       wg-restore-associated-buffers t ; restore all buffers opened in this WG?
@@ -130,20 +143,20 @@
 (when (file-exists-p wg-default-session-file)
   (wg-load wg-default-session-file))
 
-;; -- Auto Completion
+;; Auto Completion
 (setq tab-always-indent 'complete)
 (add-to-list 'completion-styles 'initials t)
 
 (setq ido-enable-flex-matching t)
+(setq ido-everywhere t)
 (ido-mode 1)
-(ido-everywhere 1)
+
 
 ;;(require 'auto-complete-config)
 ;;(add-to-list 'ac-dictionary-directories "~/.emacs.d/dict")
 ;;(ac-config-default)
 ;;(ac-flyspell-workaround)
 
-;; -- Configure Clojure
+;; Configure Clojure
 (require 'my-clojure)
 (require 'setup-smartparens)
-
