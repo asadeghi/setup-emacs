@@ -11,23 +11,37 @@
 
 ;; Add package repos
 (require 'package)
+(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/") t)
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/") t)
-;;(add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/") t)
+(add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
 (package-initialize)
 
 (when (not package-archive-contents)
   (package-refresh-contents))
 
-(defvar my-packages '(smartparens company
-                      projectile
+(defvar my-packages '(smartparens
+                      company ;; Completion framework
+                      projectile ;; Project interaction
                       sml-mode
-                      markdown-mode yaml-mode
-                      scss-mode rainbow-mode web-mode
-                      ace-jump-mode
+                      markdown-mode
+                      yaml-mode
+                      scss-mode
+                      rainbow-mode ;; Render RGB strings with color
+                      web-mode
                       solarized-theme
-                      go-mode 
-                      cider)
+;;                      go-mode 
+                      cider
+                      ac-cider
+;;                      magit
+;;                      clj-refactor
+                      iedit
+                      itail
+                      ace-jump-mode
+                      jump-char
+                      s
+                      workgroups)
   "A list of packages to ensure are installed at launch.")
 (dolist (p my-packages)
   (when (not (package-installed-p p))
@@ -35,6 +49,7 @@
 
 ;; Modes
 (cua-mode)
+(rainbow-mode)
 (global-hl-line-mode 1)
 (setq make-backup-files nil)
 (setq-default indent-tabs-mode nil)
@@ -61,12 +76,6 @@
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control) . nil)))
 (setq mouse-wheel-progressive-speed nil)
 
-;; Tramp setup
-;; C-x C-f /username@remoteserver:/path/to/file
-(setq tramp-default-method "ssh")
-;;(setq tramp-debug-buffer t)
-;;(setq tramp-verbose 10)
-
 ;; Disable SASS auto-compilation
 (setq scss-compile-at-save nil)
 
@@ -79,7 +88,10 @@
               ("%b - Dir:  " default-directory))))))) 
 
 ;; Window size
-(when window-system (set-frame-size (selected-frame) 140 47))
+(when window-system (set-frame-size (selected-frame) 140 45))
+
+;; Shorthand for questions
+(defalias 'yes-or-no-p 'y-or-n-p)
 
 ;; -- Find emacs init file. You can also use: describe-variable user-init-file
 (defun find-user-init-file ()
@@ -87,19 +99,51 @@
   (interactive)
   (find-file-other-window user-init-file))
 
-;; -- Additional packages
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/lisp"))
+;; -- Additional package path
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/modules"))
 
 ;; -- VB.NET Mode
 (autoload 'vbnet-mode "vbnet-mode.el" "Mode for editing VB.NET code." t)
 (setq auto-mode-alist (append '(("\\.\\(frm\\|bas\\|cls\\|vb\\)$" .
                               vbnet-mode)) auto-mode-alist))
 
-;; -- Smartparens setup
-(require `smartparens-config)
-(smartparens-global-mode)
+;; -- Enable recentf minor mode to track recently opened files.
+(recentf-mode 1)
+(global-set-key (kbd "C-x C-r") 'recentf-open-files)
 
-;; -- Cider (clojure-emacs) setup
-(add-hook 'cider-mode-hook #'eldoc-mode)
-(setq nrepl-hide-special-buffers t)
-(add-hook 'cider-repl-mode-hook #'smartparens-strict-mode)
+;; -- Enable iedit minor mode - allows editing of one occurance of some text in buffer.
+(require 'iedit) ;; C-; search/replace
+
+;; -- Support for loading & saving window/buffer config
+(require 'workgroups)
+(setq wg-prefix-key (kbd "C-x w")
+      wg-restore-associated-buffers t ; restore all buffers opened in this WG?
+      wg-use-default-session-file t   ; turn off for "emacs --daemon"
+      wg-default-session-file "~/.emacs_files/workgroups"
+      wg-use-faces nil
+      wg-morph-on nil)
+
+(workgroups-mode 1)     ; Activate workgroups
+(unless (file-directory-p "~/.emacs_files")
+  (mkdir "~/.emacs_files"))
+
+(when (file-exists-p wg-default-session-file)
+  (wg-load wg-default-session-file))
+
+;; -- Auto Completion
+(setq tab-always-indent 'complete)
+(add-to-list 'completion-styles 'initials t)
+
+(setq ido-enable-flex-matching t)
+(ido-mode 1)
+(ido-everywhere 1)
+
+;;(require 'auto-complete-config)
+;;(add-to-list 'ac-dictionary-directories "~/.emacs.d/dict")
+;;(ac-config-default)
+;;(ac-flyspell-workaround)
+
+;; -- Configure Clojure
+(require 'my-clojure)
+(require 'setup-smartparens)
+
