@@ -39,8 +39,8 @@
         ("M-<delete>" sp-unwrap-sexp)
         ("M-<backspace>" sp-backward-unwrap-sexp)
 
-        ("C-<right>" sp-forward-slurp-sexp)
-        ("C-<left>" sp-forward-barf-sexp)
+        ("M-<right>" sp-forward-slurp-sexp)
+        ("M-<left>" sp-forward-barf-sexp)
         ("C-M-<left>" sp-backward-slurp-sexp)
         ("C-M-<right>" sp-backward-barf-sexp)
 
