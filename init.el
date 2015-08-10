@@ -12,9 +12,9 @@
 ;; Add package repos
 (require 'package)
 (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/") t)
-;;(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/") t)
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/") t)
+;;(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/") t)
 ;;(add-to-list 'package-pinned-packages '(cider . "melpa-stable") t) ;; Only required if running Emacs v25.
 (package-initialize)
 
@@ -65,25 +65,24 @@
 ;;(global-set-key [(control \5)] (lambda () (interactive) (switch-to-buffer "*scratch*")))
 (global-set-key [f1] (lambda () (interactive) (switch-to-buffer "*scratch*")))
 (global-set-key [f2] (lambda () (interactive) (find-file "~/Desktop/notes.txt")))
+(global-set-key [f4] 'projectile-grep)
 (global-set-key [f5] 'projectile-find-file)
 (global-set-key [f6] 'start-kbd-macro)
 (global-set-key [f7] 'end-kbd-macro)
 (global-set-key [f8] 'call-last-kbd-macro)
-(define-key global-map (kbd "C-0") 'ace-jump-mode)
+(global-set-key (kbd "<f9>") 'toggle-dark-light-theme)
+(global-set-key (kbd "C-0") 'ace-jump-mode)
 
 ;; Solarized theme setup. Enable toggling between light and dark themes.
 ;;(load-theme 'solarized-[light|dark] t)
+(load-theme 'solarized-dark t)
+
 (defun toggle-dark-light-theme ()
   (interactive)
   (let ((is-light (find 'solarized-light custom-enabled-themes)))
     (dolist (theme custom-enabled-themes)
       (disable-theme theme))
     (load-theme (if is-light 'solarized-dark 'solarized-light) t)))
-
-(if window-system
-    (progn
-      (global-set-key (kbd "<f9>") 'toggle-dark-light-theme)
-      (load-theme 'solarized-dark t)))
 
 ;; Scroll one line at a time with mouse scroll wheel, no acceleration
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control) . nil)))
