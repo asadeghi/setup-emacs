@@ -65,6 +65,7 @@
 ;;(global-set-key [(control \5)] (lambda () (interactive) (switch-to-buffer "*scratch*")))
 (global-set-key [f1] (lambda () (interactive) (switch-to-buffer "*scratch*")))
 (global-set-key [f2] (lambda () (interactive) (find-file "~/Desktop/notes.txt")))
+(global-set-key [f3] 'query-replace)
 (global-set-key [f4] 'projectile-grep)
 (global-set-key [f5] 'projectile-find-file)
 (global-set-key [f6] 'start-kbd-macro)
