@@ -31,6 +31,7 @@
                       rainbow-mode ;; Render RGB strings with color
                       web-mode
                       solarized-theme
+                      auto-complete ;; Required by ac-cider
                       cider
                       ac-cider
 ;;                      go-mode
@@ -151,12 +152,11 @@
 (setq ido-everywhere t)
 (ido-mode 1)
 
-
+;; Configure Auto-Complete
 ;;(require 'auto-complete-config)
-;;(add-to-list 'ac-dictionary-directories "~/.emacs.d/dict")
-;;(ac-config-default)
-;;(ac-flyspell-workaround)
+(ac-config-default)
 
 ;; Configure Clojure
 (require 'my-clojure)
 (require 'setup-smartparens)
+
