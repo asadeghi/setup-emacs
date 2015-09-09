@@ -73,7 +73,20 @@
 (global-set-key [f7] 'end-kbd-macro)
 (global-set-key [f8] 'call-last-kbd-macro)
 (global-set-key (kbd "<f9>") 'toggle-dark-light-theme)
+(global-set-key (kbd "C-8") 'move-cursor-previous-pane)
+(global-set-key (kbd "C-9") 'move-cursor-next-pane)
 (global-set-key (kbd "C-0") 'ace-jump-mode)
+
+;; Easier window navigation
+(defun move-cursor-next-pane ()
+  "Move cursor to the next pane."
+  (interactive)
+  (other-window 1))
+
+(defun move-cursor-previous-pane ()
+  "Move cursor to the previous pane."
+  (interactive)
+  (other-window -1))
 
 ;; Solarized theme setup. Enable toggling between light and dark themes.
 ;;(load-theme 'solarized-[light|dark] t)
