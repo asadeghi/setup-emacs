@@ -37,7 +37,8 @@
 ;;                      go-mode
 ;;                      magit
 ;;                      clj-refactor
-;;                      itail                     
+;;                      itail
+                      restclient
                       iedit
                       ace-jump-mode
                       jump-char
