@@ -58,6 +58,7 @@
 (setq-default tab-width 4)
 (setq column-number-mode t)
 (tool-bar-mode -1)
+(setq create-lockfiles nil)
 (setq inhibit-startup-message t
   inhibit-startup-echo-area-message t) 
 (add-hook 'after-init-hook 'global-company-mode)
