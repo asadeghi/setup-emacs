@@ -74,7 +74,7 @@
 (global-set-key [f6] 'start-kbd-macro)
 (global-set-key [f7] 'end-kbd-macro)
 (global-set-key [f8] 'call-last-kbd-macro)
-(global-set-key (kbd "<f9>") 'toggle-dark-light-theme)
+(global-set-key (kbd "<f9>") 'whitespace-mode)
 (global-set-key (kbd "C-8") 'move-cursor-previous-pane)
 (global-set-key (kbd "C-9") 'move-cursor-next-pane)
 (global-set-key (kbd "C-0") 'ace-jump-mode)
