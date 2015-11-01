@@ -59,7 +59,8 @@
         ("C-M-]" sp-select-next-thing)
  
         ("M-F" sp-forward-symbol)
-        ("M-B" sp-backward-symbol)))
+        ("M-B" sp-backward-symbol)
+        ("M-q" sp-reindent-defun)))
 
 ;;; markdown-mode
 (sp-with-modes '(markdown-mode gfm-mode rst-mode)
@@ -146,5 +147,20 @@
       (insert "* ")))
     (let ((o (sp--get-active-overlay)))
       (indent-region (overlay-start o) (overlay-end o)))))
+
+;;; Alternative implementation of paredit-reindent-defun. Similar to indent-region.
+;;; Credit to https://github.com/benswift/.dotfiles/blob/master/init.el
+(defun sp-reindent-defun (&optional argument)
+  "Reindent the definition that the point is on.
+If the point is in a string or a comment, fill the paragraph
+instead, and with a prefix argument, justify as well."
+  (interactive "P")
+  (if (or (sp-point-in-string)
+          (sp-point-in-comment))
+      (lisp-fill-paragraph argument)
+    (save-excursion
+      (end-of-defun)
+      (beginning-of-defun)
+      (indent-sexp))))
 
 (provide 'setup-smartparens)
