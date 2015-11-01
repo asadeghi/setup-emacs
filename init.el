@@ -24,6 +24,7 @@
 (defvar my-packages '(smartparens
                       company ;; Completion framework
                       projectile ;; Project interaction
+                      ag
                       sml-mode
                       markdown-mode
                       yaml-mode
@@ -49,7 +50,7 @@
   (when (not (package-installed-p p))
     (package-install p)))
 
-;; Modes
+;; Misc settings
 (cua-mode)
 (rainbow-mode)
 (global-hl-line-mode 1)
@@ -60,7 +61,7 @@
 (tool-bar-mode -1)
 (setq create-lockfiles nil)
 (setq inhibit-startup-message t
-  inhibit-startup-echo-area-message t) 
+      inhibit-startup-echo-area-message t)
 (add-hook 'after-init-hook 'global-company-mode)
 (add-hook 'after-init-hook 'projectile-global-mode)
 
@@ -69,7 +70,7 @@
 (global-set-key [f1] (lambda () (interactive) (switch-to-buffer "*scratch*")))
 (global-set-key [f2] (lambda () (interactive) (find-file "~/Desktop/notes.txt")))
 (global-set-key [f3] 'query-replace)
-(global-set-key [f4] 'projectile-grep)
+(global-set-key [f4] 'projectile-ag)
 (global-set-key [f5] 'projectile-find-file)
 (global-set-key [f6] 'start-kbd-macro)
 (global-set-key [f7] 'end-kbd-macro)
@@ -114,7 +115,7 @@
              (dired-directory
               dired-directory
               (revert-buffer-function " %b"
-              ("%b - Dir:  " default-directory))))))) 
+              ("%b - Dir:  " default-directory)))))))
 
 ;; Window size
 (when window-system (set-frame-size (selected-frame) 140 45))
@@ -170,6 +171,11 @@
 ;; Configure Auto-Complete
 ;;(require 'auto-complete-config)
 (ac-config-default)
+
+;; Configure Ag. Ensure you have the silversearcher-ag package installed.
+(setq ag-highlight-search t)
+(setq ag-reuse-buffers 't)
+(setq ag-arguments (list "--smart-case" "--nogroup" "--column"))
 
 ;; Configure Clojure
 (require 'my-clojure)
