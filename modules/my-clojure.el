@@ -110,10 +110,11 @@
   (interactive)
   (my-run-in-nrepl
    (format "%s"
-     '(do 
-	  (use 'clojure.pprint)
-	  (use 'clojure.inspector)
-	(require '[clojure.tools [trace :as tt]])))))
+           '(do
+                (use 'clojure.pprint)
+                (use 'clojure.repl)
+                (use 'clojure.inspector)
+                (require '[clojure.tools [trace :as tt]])))))
 
 (defun my-clj-gui-diff (a b)
   "Run GUI diff against 2 vars in the repl"
