@@ -106,8 +106,9 @@
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control) . nil)))
 (setq mouse-wheel-progressive-speed nil)
 
-;; Disable SASS auto-compilation
+;; Disable SASS auto-compilation, and integrate with rainbow-mode.
 (setq scss-compile-at-save nil)
+(add-hook 'css-mode-hook 'rainbow-mode)
 
 ;; Set buffer title
 (setq-default frame-title-format
