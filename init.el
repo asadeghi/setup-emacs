@@ -31,7 +31,7 @@
                       scss-mode
                       rainbow-mode ;; Render RGB strings with color
                       web-mode
-                      solarized-theme
+;;                      solarized-theme
                       auto-complete ;; Required by ac-cider
                       cider
                       ac-cider
@@ -91,16 +91,9 @@
   (interactive)
   (other-window -1))
 
-;; Solarized theme setup. Enable toggling between light and dark themes.
+;; Theme setup.
 ;;(load-theme 'solarized-[light|dark] t)
-(load-theme 'solarized-dark t)
-
-(defun toggle-dark-light-theme ()
-  (interactive)
-  (let ((is-light (find 'solarized-light custom-enabled-themes)))
-    (dolist (theme custom-enabled-themes)
-      (disable-theme theme))
-    (load-theme (if is-light 'solarized-dark 'solarized-light) t)))
+(load-theme 'deeper-blue t)
 
 ;; Scroll one line at a time with mouse scroll wheel, no acceleration
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control) . nil)))
