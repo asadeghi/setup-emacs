@@ -29,6 +29,7 @@
                       markdown-mode
                       yaml-mode
                       scss-mode
+                      json-mode
                       rainbow-mode ;; Render RGB strings with color
                       web-mode
 ;;                      solarized-theme
