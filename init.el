@@ -15,7 +15,11 @@
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/") t)
 ;;(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/") t)
-(add-to-list 'package-pinned-packages '(cider . "melpa-stable") t) ;; Requires Emacs 24.4+ to work.
+
+;; Requires Emacs 24.4+ to work.
+(setq package-pinned-packages '((cider        . "melpa-stable")
+                                (clj-refactor . "melpa-stable")))
+
 (package-initialize)
 
 (when (not package-archive-contents)
@@ -32,14 +36,11 @@
                       json-reformat
                       rainbow-mode ;; Render RGB strings with color
                       web-mode
-;;                      solarized-theme
                       auto-complete ;; Required by ac-cider
                       cider
                       ac-cider
-;;                      go-mode
+                      clj-refactor
 ;;                      magit
-;;                      clj-refactor
-;;                      itail
                       restclient
                       iedit
                       ace-jump-mode
@@ -69,7 +70,7 @@
 ;; Shortcuts
 ;;(global-set-key [(control \5)] (lambda () (interactive) (switch-to-buffer "*scratch*")))
 (global-set-key [f1] (lambda () (interactive) (switch-to-buffer "*scratch*")))
-(global-set-key [f2] (lambda () (interactive) (find-file "~/Desktop/notes.txt")))
+(global-set-key [f2] (lambda () (interactive) (find-file "~/notes.txt")))
 (global-set-key [f3] 'query-replace)
 (global-set-key [f4] 'projectile-ag)
 (global-set-key [f5] 'projectile-find-file)
@@ -93,7 +94,6 @@
   (other-window -1))
 
 ;; Theme setup.
-;;(load-theme 'solarized-[light|dark] t)
 (load-theme 'deeper-blue t)
 
 ;; Scroll one line at a time with mouse scroll wheel, no acceleration

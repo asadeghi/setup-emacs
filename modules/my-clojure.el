@@ -19,14 +19,19 @@
 (add-hook 'cider-mode-hook 'subword-mode)
 
 ;; clj-refactor support
-;(require 'clj-refactor)
+;; Available refactorings: https://github.com/clojure-emacs/clj-refactor.el/wiki
+;; Ensure you add refactor-nrepl to your ~/.lein/profiles.clj
+;; :plugins [[refactor-nrepl "2.0.0"]
+;;           [cider/cider-nrepl "0.10.2"]]
+(require 'clj-refactor)
 
-;(defun my-clojure-mode-hook ()
-;    (clj-refactor-mode 1)
-;    (yas-minor-mode 1) ; for adding require/use/import
-;    (cljr-add-keybindings-with-prefix "C-c C-m"))
-; 
-;(add-hook 'clojure-mode-hook #'my-clojure-mode-hook)
+(defun my-clojure-mode-hook ()
+    (clj-refactor-mode 1)
+    (yas-minor-mode 1) ; for adding require/use/import
+    (setq cljr-warn-on-eval nil)
+    (cljr-add-keybindings-with-prefix "C-c C-m"))
+
+(add-hook 'clojure-mode-hook #'my-clojure-mode-hook)
 
 ;; Some default eldoc facilities
 (add-hook 'cider-connected-hook
