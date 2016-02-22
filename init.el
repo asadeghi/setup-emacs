@@ -112,8 +112,10 @@
               (revert-buffer-function " %b"
               ("%b - Dir:  " default-directory)))))))
 
-;; Window size
-(when window-system (set-frame-size (selected-frame) 140 45))
+;; Window font and size
+(when window-system
+  (set-face-attribute 'default nil :height 100) ;; The value is in 1/10pt, so 100 will give you 10pt.
+  (set-frame-size (selected-frame) 140 45))
 
 ;; Shorthand for questions
 (defalias 'yes-or-no-p 'y-or-n-p)
