@@ -46,7 +46,8 @@
                       ace-jump-mode
                       jump-char
                       s
-                      workgroups)
+                      workgroups
+                      org-present)
   "A list of packages to ensure are installed at launch.")
 (dolist (p my-packages)
   (when (not (package-installed-p p))
@@ -173,6 +174,24 @@
 (setq ag-highlight-search t)
 (setq ag-reuse-buffers 't)
 (setq ag-arguments (list "--smart-case" "--nogroup" "--column"))
+
+;; Configure org-present for presentation of slides using Emacs.
+;; M-x org-present
+;; C-c C-q (org-present-quit)
+(eval-after-load "org-present"
+  '(progn
+     (add-hook 'org-present-mode-hook
+               (lambda ()
+                 (org-present-big)
+                 (org-display-inline-images)
+                 (org-present-hide-cursor)
+                 (org-present-read-only)))
+     (add-hook 'org-present-mode-quit-hook
+               (lambda ()
+                 (org-present-small)
+                 (org-remove-inline-images)
+                 (org-present-show-cursor)
+                 (org-present-read-write)))))
 
 ;; Configure Clojure
 (require 'my-clojure)
