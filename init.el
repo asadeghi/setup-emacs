@@ -11,6 +11,7 @@
 
 ;; Add package repos
 (require 'package)
+(setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/") t)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/") t)
@@ -21,10 +22,9 @@
                                 (clj-refactor . "melpa-stable")))
 
 (package-initialize)
-
 (when (not package-archive-contents)
   (package-refresh-contents))
-
+ 
 (defvar my-packages '(smartparens
                       company ;; Completion framework
                       projectile ;; Project interaction
@@ -40,7 +40,6 @@
                       cider
                       ac-cider
                       clj-refactor
-;;                      magit
                       restclient
                       iedit
                       ace-jump-mode
@@ -52,6 +51,9 @@
 (dolist (p my-packages)
   (when (not (package-installed-p p))
     (package-install p)))
+
+;; Additional package path
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/modules"))
 
 ;; Misc settings
 (cua-mode)
@@ -65,8 +67,52 @@
 (setq create-lockfiles nil)
 (setq inhibit-startup-message t
       inhibit-startup-echo-area-message t)
-(add-hook 'after-init-hook 'global-company-mode)
+;;(add-hook 'after-init-hook 'global-company-mode)
 (add-hook 'after-init-hook 'projectile-global-mode)
+
+;; --- Package config ---
+
+(use-package company
+             :defer 3
+             :config
+             (global-company-mode))
+
+(use-package ace-jump-mode
+             :defer t
+             :bind ("C-0" . ace-jump-mode))
+
+;; Configure Ag. Ensure you have the silversearcher-ag package installed.
+(use-package ag
+             :defer t
+             :config
+             (setq ag-highlight-search t)
+             (setq ag-reuse-buffers 't)
+             (setq ag-arguments (list "--smart-case" "--nogroup" "--column")))
+
+;; Configure org-present for presentation of slides using Emacs.
+;; M-x org-present
+;; C-c C-q (org-present-quit)
+(use-package org-present
+             :defer 3
+             :init
+             (add-hook 'org-present-mode-hook
+               (lambda ()
+                 (org-present-big)
+                 (org-display-inline-images)
+                 (org-present-hide-cursor)
+                 (org-present-read-only)))
+             (add-hook 'org-present-mode-quit-hook
+               (lambda ()
+                 (org-present-small)
+                 (org-remove-inline-images)
+                 (org-present-show-cursor)
+                 (org-present-read-write))))
+
+(use-package my-clojure
+             :defer 1)
+
+(use-package setup-smartparens
+             :defer 1)
 
 ;; Shortcuts
 ;;(global-set-key [(control \5)] (lambda () (interactive) (switch-to-buffer "*scratch*")))
@@ -81,7 +127,7 @@
 (global-set-key (kbd "<f9>") 'whitespace-mode)
 (global-set-key (kbd "C-8") 'move-cursor-previous-pane)
 (global-set-key (kbd "C-9") 'move-cursor-next-pane)
-(global-set-key (kbd "C-0") 'ace-jump-mode)
+;(global-set-key (kbd "C-0") 'ace-jump-mode)
 
 ;; Easier window navigation
 (defun move-cursor-next-pane ()
@@ -127,9 +173,6 @@
   (interactive)
   (find-file-other-window user-init-file))
 
-;; Additional package path
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/modules"))
-
 ;; VB.NET Mode
 (autoload 'vbnet-mode "vbnet-mode.el" "Mode for editing VB.NET code." t)
 (setq auto-mode-alist (append '(("\\.\\(frm\\|bas\\|cls\\|vb\\)$" .
@@ -169,31 +212,3 @@
 ;; Configure Auto-Complete
 ;;(require 'auto-complete-config)
 (ac-config-default)
-
-;; Configure Ag. Ensure you have the silversearcher-ag package installed.
-(setq ag-highlight-search t)
-(setq ag-reuse-buffers 't)
-(setq ag-arguments (list "--smart-case" "--nogroup" "--column"))
-
-;; Configure org-present for presentation of slides using Emacs.
-;; M-x org-present
-;; C-c C-q (org-present-quit)
-(eval-after-load "org-present"
-  '(progn
-     (add-hook 'org-present-mode-hook
-               (lambda ()
-                 (org-present-big)
-                 (org-display-inline-images)
-                 (org-present-hide-cursor)
-                 (org-present-read-only)))
-     (add-hook 'org-present-mode-quit-hook
-               (lambda ()
-                 (org-present-small)
-                 (org-remove-inline-images)
-                 (org-present-show-cursor)
-                 (org-present-read-write)))))
-
-;; Configure Clojure
-(require 'my-clojure)
-(require 'setup-smartparens)
-
