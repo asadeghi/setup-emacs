@@ -25,7 +25,8 @@
 (when (not package-archive-contents)
   (package-refresh-contents))
  
-(defvar my-packages '(smartparens
+(defvar my-packages '(use-package
+                      smartparens
                       company ;; Completion framework
                       projectile ;; Project interaction
                       ag
