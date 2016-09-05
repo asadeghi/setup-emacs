@@ -161,9 +161,19 @@
               ("%b - Dir:  " default-directory)))))))
 
 ;; Window font and size
-(when window-system
-  (set-face-attribute 'default nil :height 100) ;; The value is in 1/10pt, so 100 will give you 10pt.
-  (set-frame-size (selected-frame) 140 45))
+;; Font size is in 1/10pt, so 100 will give you 10pt.
+(defun fontify-frame (frame)
+  (interactive)
+  (if window-system
+      (progn
+        (set-frame-size (selected-frame) 140 45)
+        (if (> (x-display-pixel-width) 2000)
+            (set-face-attribute 'default nil :height 140) ;; Cinema Display
+          (set-face-attribute 'default nil :height 100)))))
+
+;; Fontify current and future frames
+(fontify-frame nil)
+(push 'fontify-frame after-make-frame-functions)
 
 ;; Shorthand for questions
 (defalias 'yes-or-no-p 'y-or-n-p)
