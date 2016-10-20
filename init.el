@@ -47,7 +47,8 @@
                       jump-char
                       s
                       workgroups
-                      org-present)
+                      org-present
+                      exec-path-from-shell)
   "A list of packages to ensure are installed at launch.")
 (dolist (p my-packages)
   (when (not (package-installed-p p))
@@ -109,6 +110,11 @@
                  (org-present-show-cursor)
                  (org-present-read-write))))
 
+(use-package exec-path-from-shell
+             :defer 1
+             :config (when (memq window-system '(mac ns))
+                           (exec-path-from-shell-initialize)))
+
 (use-package my-clojure
              :defer 1)
 
@@ -169,7 +175,7 @@
         (set-frame-size (selected-frame) 140 45)
         (if (> (x-display-pixel-width) 2000)
             (set-face-attribute 'default nil :height 140) ;; Cinema Display
-          (set-face-attribute 'default nil :height 100)))))
+          (set-face-attribute 'default nil :height 110)))))
 
 ;; Fontify current and future frames
 (fontify-frame nil)
