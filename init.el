@@ -95,7 +95,7 @@
              :config
              (setq ag-highlight-search t)
              (setq ag-reuse-buffers 't)
-             (setq ag-arguments (list "--smart-case" "--nogroup" "--column")))
+             (setq ag-arguments (list "--smart-case" "--column")))
 
 ;; Configure org-present for presentation of slides using Emacs.
 ;; M-x org-present
