@@ -48,7 +48,8 @@
                       s
                       workgroups
                       org-present
-                      exec-path-from-shell)
+                      exec-path-from-shell
+                      dumb-jump)
   "A list of packages to ensure are installed at launch.")
 (dolist (p my-packages)
   (when (not (package-installed-p p))
@@ -69,10 +70,15 @@
 (setq create-lockfiles nil)
 (setq inhibit-startup-message t
       inhibit-startup-echo-area-message t)
-;;(add-hook 'after-init-hook 'global-company-mode)
 (add-hook 'after-init-hook 'projectile-global-mode)
 
 ;; --- Package config ---
+
+; Dumb-jump jumps to definition of symbols: C-M g , and back: C-M p
+(use-package dumb-jump
+             :defer 4
+             :config
+             (dumb-jump-mode))
 
 (use-package company
              :defer 3
