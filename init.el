@@ -152,7 +152,7 @@
   (if window-system
       (progn
         (set-frame-size (selected-frame) 140 45)
-        (if (> (x-display-pixel-width) 2000)
+        (if (and (> (x-display-pixel-width) 2000) (> (x-display-pixel-height) 1500))
             (set-face-attribute 'default nil :height 140) ;; Cinema Display
           (set-face-attribute 'default nil :height 110)))))
 
