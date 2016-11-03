@@ -209,11 +209,16 @@
 ;;(add-to-list 'ac-modes 'enh-ruby-mode)
 ;;(add-to-list 'ac-modes 'web-mode)
 
+;; Set Command key to Meta on MacOS.
+(when (eq system-type 'darwin)
+  (setq mac-command-modifier 'meta)
+  (setq mac-option-modifier 'meta))
+
 ;; Useful keybindings
 (global-set-key [f1] (lambda () (interactive) (switch-to-buffer "*scratch*")))
 (global-set-key [f2] (lambda () (interactive) (find-file "~/notes.txt")))
 (global-set-key [f3] 'query-replace)
-(global-set-key [f4] 'projectile-find-file) ; Open file within project.
+(global-set-key [f5] 'projectile-find-file) ; Open file within project.
 (global-set-key [f6] 'start-kbd-macro)
 (global-set-key [f7] 'end-kbd-macro)
 (global-set-key [f8] 'call-last-kbd-macro)
