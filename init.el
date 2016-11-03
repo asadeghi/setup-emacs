@@ -152,8 +152,8 @@
   (if window-system
       (progn
         (set-frame-size (selected-frame) 140 45)
-        (if (and (> (x-display-pixel-width) 2000) (> (x-display-pixel-height) 1500))
-            (set-face-attribute 'default nil :height 140) ;; Cinema Display
+        (if (and (> (x-display-pixel-width) 2000) (> (x-display-pixel-height) 1400))
+            (set-face-attribute 'default nil :height 150) ;; Cinema Display
           (set-face-attribute 'default nil :height 110)))))
 
 ;; Fontify current and future frames
@@ -211,18 +211,19 @@
 
 ;; Useful keybindings
 (global-set-key [f1] (lambda () (interactive) (switch-to-buffer "*scratch*")))
-(global-set-key [f2] 'query-replace)
-(global-set-key [f3] 'dumb-jump-go)
-(global-set-key [f4] 'projectile-ag)
-(global-set-key [f5] 'projectile-find-file)
+(global-set-key [f2] (lambda () (interactive) (find-file "~/notes.txt")))
+(global-set-key [f3] 'query-replace)
+(global-set-key [f4] 'projectile-find-file) ; Open file within project.
 (global-set-key [f6] 'start-kbd-macro)
 (global-set-key [f7] 'end-kbd-macro)
 (global-set-key [f8] 'call-last-kbd-macro)
-(global-set-key (kbd "<f9>") 'whitespace-mode)
-(global-set-key (kbd "C-1") (lambda () (interactive) (find-file "~/notes.txt")))
+(global-set-key [f9] 'whitespace-mode)
+(global-set-key [f12] 'dumb-jump-go) ; Jump to definition.
+(global-set-key (kbd "C-<f12>") 'dumb-jump-back) ; Jump back from definition.
 (global-set-key (kbd "C-8") 'move-cursor-previous-pane)
 (global-set-key (kbd "C-9") 'move-cursor-next-pane)
 ;(global-set-key (kbd "C-0") 'ace-jump-mode)
+(global-set-key (kbd "C-S-f") 'projectile-ag) ; Search for symbol within project.
 
 ; Dumb-jump jumps to definition of symbols: C-M g , and back: C-M p
 (use-package dumb-jump
