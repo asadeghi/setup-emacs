@@ -53,7 +53,8 @@
                       workgroups
                       org-present
                       exec-path-from-shell
-                      dumb-jump)
+                      dumb-jump
+                      haml-mode)
   "A list of packages to ensure are installed at launch.")
 (dolist (p my-packages)
   (when (not (package-installed-p p))
