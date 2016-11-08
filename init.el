@@ -221,6 +221,7 @@
 (global-set-key [f3] 'query-replace)
 (global-set-key [f4] 'goto-line)
 (global-set-key [f5] 'projectile-find-file) ; Open file within project.
+(global-set-key (kbd "C-<f5>") 'projectile-toggle-between-implementation-and-test)
 (global-set-key [f6] 'start-kbd-macro)
 (global-set-key [f7] 'end-kbd-macro)
 (global-set-key [f8] 'call-last-kbd-macro)
