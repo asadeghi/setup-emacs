@@ -216,7 +216,7 @@
   (setq mac-option-modifier 'meta))
 
 ;; Useful keybindings
-(global-set-key [f1] (lambda () (interactive) (switch-to-buffer "*scratch*")))
+(global-set-key [f1] (lambda () (interactive) (switch-to-buffer "*tmpscratch*")))
 (global-set-key [f2] (lambda () (interactive) (find-file "~/notes.txt")))
 (global-set-key [f3] 'query-replace)
 (global-set-key [f4] 'goto-line)
