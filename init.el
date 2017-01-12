@@ -227,7 +227,7 @@
 (global-set-key [f8] 'call-last-kbd-macro)
 (global-set-key [f9] 'whitespace-mode)
 (global-set-key [f12] 'dumb-jump-go) ; Jump to definition.
-(global-set-key (kbd "C-<f12>") 'dumb-jump-back) ; Jump back from definition.
+(global-set-key (kbd "C--") 'dumb-jump-back) ; Jump back from definition.
 (global-set-key (kbd "C-8") 'move-cursor-previous-pane)
 (global-set-key (kbd "C-9") 'move-cursor-next-pane)
 ;(global-set-key (kbd "C-0") 'ace-jump-mode)
