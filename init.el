@@ -54,7 +54,8 @@
                       org-present
                       exec-path-from-shell
                       dumb-jump
-                      haml-mode)
+                      haml-mode
+                      flycheck)
   "A list of packages to ensure are installed at launch.")
 (dolist (p my-packages)
   (when (not (package-installed-p p))
@@ -280,6 +281,10 @@
              :defer 1
              :config (when (memq window-system '(mac ns))
                            (exec-path-from-shell-initialize)))
+
+(use-package flycheck
+             :defer 1
+             :init (global-flycheck-mode))
 
 (use-package my-clojure
              :defer 1)
