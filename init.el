@@ -89,7 +89,7 @@
 (global-hl-line-mode 1)
 (setq make-backup-files nil)
 (setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
+(setq-default tab-width 2)
 (setq create-lockfiles nil)
 (setq inhibit-startup-message t
       inhibit-startup-echo-area-message t)
@@ -155,7 +155,7 @@
         (set-frame-size (selected-frame) 140 45)
         (if (and (> (x-display-pixel-width) 2000) (> (x-display-pixel-height) 1400))
             (set-face-attribute 'default nil :height 150) ;; Cinema Display
-          (set-face-attribute 'default nil :height 110)))))
+          (set-face-attribute 'default nil :height 105)))))
 
 ;; Fontify current and future frames
 (fontify-frame nil)
