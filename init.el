@@ -238,7 +238,8 @@
 (use-package dumb-jump
              :defer 4
              :config
-             (dumb-jump-mode))
+             (dumb-jump-mode)
+             (setq dumb-jump-force-searcher 'ag))
 
 (use-package company
              :defer 3
@@ -284,7 +285,9 @@
 
 (use-package flycheck
              :defer 1
-             :init (global-flycheck-mode))
+             :init
+             (global-flycheck-mode)
+             (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
 
 (use-package my-clojure
              :defer 1)
