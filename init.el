@@ -55,7 +55,8 @@
                       exec-path-from-shell
                       dumb-jump
                       haml-mode
-                      flycheck)
+                      flycheck
+                      rspec-mode)
   "A list of packages to ensure are installed at launch.")
 (dolist (p my-packages)
   (when (not (package-installed-p p))
@@ -287,7 +288,7 @@
              :defer 1
              :init
              (global-flycheck-mode)
-             (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
+             (setq-default flycheck-disabled-checkers '(emacs-lisp emacs-lisp-checkdoc)))
 
 (use-package my-clojure
              :defer 1)
