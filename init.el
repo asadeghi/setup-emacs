@@ -1,6 +1,9 @@
 ;;; init.el --- Armin's Emacs configuration
 ;;
 
+;; After loading, you can use the following to see all key bindings:
+;; M-x describe-personal-keybindings
+
 ;; Proxy Authentication - Enable if you're behind an authenticated proxy.
 ;;(setq url-proxy-services
 ;;   '(("no_proxy" . "^\\(localhost\\|10.*\\)")
@@ -18,9 +21,8 @@
 (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/") t)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/") t)
-;;(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/") t)
 
-;; Pinned packages require Emacs 24.4+ to work.
+;; Pinning packages require Emacs 24.4+ to work.
 (setq package-pinned-packages '((cider        . "melpa-stable")
                                 (clj-refactor . "melpa-stable")))
 
@@ -31,9 +33,7 @@
  
 (defvar my-packages '(use-package
                       smartparens
-                      company ;; Completion framework
                       projectile ;; Project interaction
-                      ag ;; Silver-Searcher-Ag
                       sml-mode
                       markdown-mode
                       yaml-mode
@@ -47,23 +47,16 @@
                       clj-refactor
                       restclient
                       iedit
-                      ace-jump-mode
                       jump-char
                       s
                       workgroups
-                      org-present
-                      exec-path-from-shell
                       dumb-jump
                       haml-mode
-                      flycheck
                       rspec-mode)
   "A list of packages to ensure are installed at launch.")
 (dolist (p my-packages)
   (when (not (package-installed-p p))
     (package-install p)))
-
-;; Additional package path
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/modules"))
 
 ;; Always load newest compiled files.
 (setq load-prefer-newer t)
@@ -156,7 +149,7 @@
       (progn
         (set-frame-size (selected-frame) 140 45)
         (if (and (> (x-display-pixel-width) 2000) (> (x-display-pixel-height) 1400))
-            (set-face-attribute 'default nil :height 150) ;; Cinema Display
+            (set-face-attribute 'default nil :height 140) ;; Cinema Display
           (set-face-attribute 'default nil :height 105)))))
 
 ;; Fontify current and future frames
@@ -168,11 +161,6 @@
   "Edit the `user-init-file', in another window."
   (interactive)
   (find-file-other-window user-init-file))
-
-;; VB.NET Mode
-(autoload 'vbnet-mode "vbnet-mode.el" "Mode for editing VB.NET code." t)
-(setq auto-mode-alist (append '(("\\.\\(frm\\|bas\\|cls\\|vb\\)$" .
-                              vbnet-mode)) auto-mode-alist))
 
 ;; Enable recentf minor mode to track recently opened files.
 (recentf-mode 1)
@@ -228,77 +216,84 @@
 (global-set-key [f7] 'end-kbd-macro)
 (global-set-key [f8] 'call-last-kbd-macro)
 (global-set-key [f9] 'whitespace-mode)
-(global-set-key [f12] 'dumb-jump-go) ; Jump to definition.
-(global-set-key (kbd "C--") 'dumb-jump-back) ; Jump back from definition.
+;;(global-set-key [f12] 'dumb-jump-go) ; Jump to definition.
+;;(global-set-key (kbd "C--") 'dumb-jump-back) ; Jump back from definition.
 (global-set-key (kbd "C-8") 'move-cursor-previous-pane)
 (global-set-key (kbd "C-9") 'move-cursor-next-pane)
-;(global-set-key (kbd "C-0") 'ace-jump-mode)
 (global-set-key (kbd "C-S-f") 'projectile-ag) ; Search for symbol within project.
 
-; Dumb-jump jumps to definition of symbols: C-M g , and back: C-M p
+;; Dumb-jump jumps to definition of symbols.
 (use-package dumb-jump
-  :defer 4
   :config
-  (setq dumb-jump-force-searcher 'ag))
+  (setq dumb-jump-force-searcher 'ag)
+  :bind (("<f12>" . dumb-jump-go)
+         ("C--" . dump-jump-back)))
 
+;; Completion framework.
 (use-package company
-             :defer 3
-             :config
-             (global-company-mode))
+  :ensure t
+  :config
+  (global-company-mode))
 
+;; Fast cursor movement.
+;; Bindings:
 (use-package ace-jump-mode
-             :defer t
-             :bind ("C-0" . ace-jump-mode))
+  :ensure t
+  :bind ("C-0" . ace-jump-mode))
 
 ;; Configure Ag. Ensure you have the silversearcher-ag package installed.
 (use-package ag
-             :defer t
-             :config
-             (setq ag-highlight-search t)
-             (setq ag-reuse-buffers 't)
-             (setq ag-arguments (list "--smart-case" "--column"))
-             )
+  :ensure t
+  :config
+  (setq ag-highlight-search t)
+  (setq ag-reuse-buffers 't)
+  (setq ag-arguments (list "--smart-case" "--column")))
 
 ;; Configure org-present for presentation of slides using Emacs.
 ;; M-x org-present
-;; C-c C-q (org-present-quit)
+;; C-c C-q    (org-present-quit)
 (use-package org-present
-             :defer 3
-             :init
-             (add-hook 'org-present-mode-hook
-               (lambda ()
-                 (org-present-big)
-                 (org-display-inline-images)
-                 (org-present-hide-cursor)
-                 (org-present-read-only)))
-             (add-hook 'org-present-mode-quit-hook
-               (lambda ()
-                 (org-present-small)
-                 (org-remove-inline-images)
-                 (org-present-show-cursor)
-                 (org-present-read-write))))
+  :ensure t
+  :init
+  (add-hook 'org-present-mode-hook
+            (lambda ()
+              (org-present-big)
+              (org-display-inline-images)
+              (org-present-hide-cursor)
+              (org-present-read-only)))
+  (add-hook 'org-present-mode-quit-hook
+            (lambda ()
+              (org-present-small)
+              (org-remove-inline-images)
+              (org-present-show-cursor)
+              (org-present-read-write))))
 
+;; Make Emacs use the $PATH set up by the user's shell.
 (use-package exec-path-from-shell
-             :defer 1
-             :config (when (memq window-system '(mac ns))
-                           (exec-path-from-shell-initialize)))
+  :ensure t
+  :config (when (memq window-system '(mac ns))
+            (exec-path-from-shell-initialize)))
 
+;; Syntax checking.
 (use-package flycheck
-             :defer 1
-             :init
-             (global-flycheck-mode)
-             (setq-default flycheck-disabled-checkers '(emacs-lisp emacs-lisp-checkdoc)))
+  :ensure t
+  :init
+  (global-flycheck-mode)
+  (setq-default flycheck-disabled-checkers '(emacs-lisp emacs-lisp-checkdoc)))
 
+;; Provides a REPL buffer connected to a Ruby subprocess.
+;; C-x C-q : Switch the compilation buffer mode for interactive debugging
 (use-package inf-ruby
   :ensure t
   :config
-  (add-hook 'after-init-hook 'inf-ruby-switch-setup) ;; Switch the compilation buffer mode with C-x C-q (for interactive debugging)
-  )
+  (add-hook 'after-init-hook 'inf-ruby-switch-setup))
 
 (use-package my-clojure
-             :defer 1)
+  :load-path "modules/"
+  :defer 1)
 
-(use-package setup-smartparens
-             :defer 1)
+(use-package my-smartparens
+  :load-path "modules/"
+  :defer 2)
 
 ;; EOF
