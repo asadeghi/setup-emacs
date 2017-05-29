@@ -237,10 +237,9 @@
 
 ; Dumb-jump jumps to definition of symbols: C-M g , and back: C-M p
 (use-package dumb-jump
-             :defer 4
-             :config
-             (dumb-jump-mode)
-             (setq dumb-jump-force-searcher 'ag))
+  :defer 4
+  :config
+  (setq dumb-jump-force-searcher 'ag))
 
 (use-package company
              :defer 3
@@ -289,6 +288,12 @@
              :init
              (global-flycheck-mode)
              (setq-default flycheck-disabled-checkers '(emacs-lisp emacs-lisp-checkdoc)))
+
+(use-package inf-ruby
+  :ensure t
+  :config
+  (add-hook 'after-init-hook 'inf-ruby-switch-setup) ;; Switch the compilation buffer mode with C-x C-q (for interactive debugging)
+  )
 
 (use-package my-clojure
              :defer 1)
