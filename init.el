@@ -33,7 +33,6 @@
  
 (defvar my-packages '(use-package
                       smartparens
-                      projectile ;; Project interaction
                       sml-mode
                       markdown-mode
                       yaml-mode
@@ -50,7 +49,6 @@
                       jump-char
                       s
                       workgroups
-                      dumb-jump
                       haml-mode
                       rspec-mode)
   "A list of packages to ensure are installed at launch.")
@@ -88,7 +86,7 @@
 (setq create-lockfiles nil)
 (setq inhibit-startup-message t
       inhibit-startup-echo-area-message t)
-(add-hook 'after-init-hook 'projectile-global-mode)
+
 
 ;; Scroll one line at a time with mouse scroll wheel, no acceleration
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control) . nil)))
@@ -210,20 +208,31 @@
 (global-set-key [f2] (lambda () (interactive) (find-file "~/notes.txt")))
 (global-set-key [f3] 'query-replace)
 (global-set-key [f4] 'goto-line)
-(global-set-key [f5] 'projectile-find-file) ; Open file within project.
-(global-set-key (kbd "C-<f5>") 'projectile-toggle-between-implementation-and-test)
+;;(global-set-key [f5] 'projectile-find-file) ; Open file within project.
+;;(global-set-key (kbd "C-<f5>") 'projectile-toggle-between-implementation-and-test)
 (global-set-key [f6] 'start-kbd-macro)
 (global-set-key [f7] 'end-kbd-macro)
 (global-set-key [f8] 'call-last-kbd-macro)
 (global-set-key [f9] 'whitespace-mode)
 ;;(global-set-key [f12] 'dumb-jump-go) ; Jump to definition.
 ;;(global-set-key (kbd "C--") 'dumb-jump-back) ; Jump back from definition.
+;;(global-set-key (kbd "C-0") 'ace-jump-mode)
 (global-set-key (kbd "C-8") 'move-cursor-previous-pane)
 (global-set-key (kbd "C-9") 'move-cursor-next-pane)
-(global-set-key (kbd "C-S-f") 'projectile-ag) ; Search for symbol within project.
+;;(global-set-key (kbd "C-S-f") 'projectile-ag) ; Search for symbol within project.
+
+;; Project interaction library.
+(use-package projectile
+  :ensure t
+  :init
+  (add-hook 'after-init-hook 'projectile-global-mode)
+  :bind (("<f5>" . projectile-find-file)
+         ("C-<f5>" . projectile-toggle-between-implementation-and-test)
+         ("C-S-f" . projectile-ag)))
 
 ;; Dumb-jump jumps to definition of symbols.
 (use-package dumb-jump
+  :ensure t
   :config
   (setq dumb-jump-force-searcher 'ag)
   :bind (("<f12>" . dumb-jump-go)
@@ -270,9 +279,9 @@
 
 ;; Make Emacs use the $PATH set up by the user's shell.
 (use-package exec-path-from-shell
+  :if (memq window-system '(mac ns))
   :ensure t
-  :config (when (memq window-system '(mac ns))
-            (exec-path-from-shell-initialize)))
+  :config (exec-path-from-shell-initialize))
 
 ;; Syntax checking.
 (use-package flycheck
