@@ -211,7 +211,7 @@
   :config
   (setq dumb-jump-force-searcher 'ag)
   :bind (("<f12>" . dumb-jump-go)
-         ("C--" . dump-jump-back)))
+         ("C--" . dumb-jump-back)))
 
 ;; Completion framework.
 (use-package company
