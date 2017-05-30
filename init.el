@@ -15,55 +15,27 @@
 ;;                (cons "Input your LDAP UID !"
 ;;                      (base64-encode-string "LOGIN:PASSWORD")))))
 
-;; Install packages
+;; Package setup.
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/") t)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/") t)
-
-;; Pinning packages require Emacs 24.4+ to work.
-(setq package-pinned-packages '((cider        . "melpa-stable")
-                                (clj-refactor . "melpa-stable")))
-
 (package-initialize)
-;; Update package archive if required.
-(when (not package-archive-contents)
-  (package-refresh-contents))
- 
-(defvar my-packages '(use-package
-                      smartparens
-                      sml-mode
-                      markdown-mode
-                      yaml-mode
-                      scss-mode
-                      json-reformat
-                      rainbow-mode ;; Render RGB strings with color
-                      web-mode
-                      auto-complete ;; Required by ac-cider
-                      cider
-                      ac-cider
-                      clj-refactor
-                      restclient
-                      iedit
-                      jump-char
-                      s
-                      workgroups
-                      haml-mode
-                      rspec-mode)
-  "A list of packages to ensure are installed at launch.")
-(dolist (p my-packages)
-  (when (not (package-installed-p p))
-    (package-install p)))
+
+;; Bootstrap use-package.
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 
 ;; Always load newest compiled files.
 (setq load-prefer-newer t)
 
 ;; Reduce the frequency of garbage collection by making it happen on
-;; each 50MB of allocated data (the default is on every 0.76MB)
+;; each 50MB of allocated data (the default is on every 0.76MB).
 (setq gc-cons-threshold 50000000)
 
-;; Warn when opening files bigger than 100MB
+;; Warn when opening files bigger than 100MB.
 (setq large-file-warning-threshold 100000000)
 
 ;; Disable the toolbar, waste of space.
@@ -78,7 +50,6 @@
 
 ;; Misc settings.
 (cua-mode)
-(rainbow-mode)
 (global-hl-line-mode 1)
 (setq make-backup-files nil)
 (setq-default indent-tabs-mode nil)
@@ -86,7 +57,6 @@
 (setq create-lockfiles nil)
 (setq inhibit-startup-message t
       inhibit-startup-echo-area-message t)
-
 
 ;; Scroll one line at a time with mouse scroll wheel, no acceleration
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control) . nil)))
@@ -135,10 +105,6 @@
 ;; Theme setup.
 (load-theme 'deeper-blue t)
 
-;; Disable SASS auto-compilation, and integrate with rainbow-mode.
-(setq scss-compile-at-save nil)
-(add-hook 'css-mode-hook 'rainbow-mode)
-
 ;; Window font and size
 ;; Font size is in 1/10pt, so 100 will give you 10pt.
 (defun fontify-frame (frame)
@@ -164,46 +130,21 @@
 (recentf-mode 1)
 (global-set-key (kbd "C-x C-r") 'recentf-open-files)
 
-;; Enable iedit minor mode - allows editing of one occurance of some text in buffer.
-(require 'iedit) ;; C-; search/replace
-
-;; Support for loading & saving window/buffer config
-(require 'workgroups)
-(setq wg-prefix-key (kbd "C-x w")
-      wg-restore-associated-buffers t ; restore all buffers opened in this WG?
-      wg-use-default-session-file t   ; turn off for "emacs --daemon"
-      wg-default-session-file "~/.emacs_files/workgroups"
-      wg-use-faces nil
-      wg-morph-on nil)
-
-(workgroups-mode 1)     ; Activate workgroups
-(unless (file-directory-p "~/.emacs_files")
-  (mkdir "~/.emacs_files"))
-
-(when (file-exists-p wg-default-session-file)
-  (wg-load wg-default-session-file))
-
-;; Auto Completion
+;; Auto Completion.
 (setq tab-always-indent 'complete)
 (add-to-list 'completion-styles 'initials t)
 
+;; Ido.
 (setq ido-enable-flex-matching t)
 (setq ido-everywhere t)
 (ido-mode 1)
-
-;; Configure Auto-Complete
-;;(require 'auto-complete-config)
-(ac-config-default)
-;;(setq ac-ignore-case nil)
-;;(add-to-list 'ac-modes 'enh-ruby-mode)
-;;(add-to-list 'ac-modes 'web-mode)
 
 ;; Set Command key to Meta on MacOS.
 (when (eq system-type 'darwin)
   (setq mac-command-modifier 'meta)
   (setq mac-option-modifier 'meta))
 
-;; Useful keybindings
+;; Useful keybindings.
 (global-set-key [f1] (lambda () (interactive) (switch-to-buffer "*tmpscratch*")))
 (global-set-key [f2] (lambda () (interactive) (find-file "~/notes.txt")))
 (global-set-key [f3] 'query-replace)
@@ -220,6 +161,40 @@
 (global-set-key (kbd "C-8") 'move-cursor-previous-pane)
 (global-set-key (kbd "C-9") 'move-cursor-next-pane)
 ;;(global-set-key (kbd "C-S-f") 'projectile-ag) ; Search for symbol within project.
+
+;; SCSS mode.
+(use-package scss-mode
+  :ensure t
+  :config
+  (setq scss-compile-at-save nil))
+
+;; Render RGB strings with color.
+(use-package rainbow-mode
+  :ensure t
+  :init
+  (add-hook 'css-mode-hook 'rainbow-mode)
+  :config
+  (rainbow-mode))
+
+;; REST testing.
+(use-package restclient
+  :ensure t)
+
+;; Workgroups - support for loading & saving window/buffer config.
+(use-package workgroups
+  :ensure t
+  :config
+  (unless (file-directory-p "~/.emacs_files")
+    (mkdir "~/.emacs_files"))
+  (setq wg-prefix-key (kbd "C-x w")
+        wg-restore-associated-buffers t ; restore all buffers opened in this WG?
+        wg-use-default-session-file t  ; turn off for "emacs --daemon"
+        wg-default-session-file "~/.emacs_files/workgroups"
+        wg-use-faces nil
+        wg-morph-on nil)
+  (workgroups-mode 1)
+  (when (file-exists-p wg-default-session-file)
+    (wg-load wg-default-session-file)))
 
 ;; Project interaction library.
 (use-package projectile
@@ -245,7 +220,6 @@
   (global-company-mode))
 
 ;; Fast cursor movement.
-;; Bindings:
 (use-package ace-jump-mode
   :ensure t
   :bind ("C-0" . ace-jump-mode))
@@ -297,12 +271,69 @@
   :config
   (add-hook 'after-init-hook 'inf-ruby-switch-setup))
 
+(use-package sml-mode
+  :ensure t)
+
+(use-package markdown-mode
+  :ensure t)
+
+(use-package yaml-mode
+  :ensure t)
+
+(use-package json-reformat
+  :ensure t)
+
+(use-package web-mode
+  :ensure t)
+
+;; Enable iedit minor mode - allows editing of one occurance of some text in buffer.
+;; C-; search/replace
+(use-package iedit
+  :ensure t)
+
+(use-package jump-char
+  :ensure t)
+
+(use-package s
+  :ensure t)
+
+(use-package haml-mode
+  :ensure t)
+
+(use-package rspec-mode
+  :ensure t)
+
+(use-package smartparens
+  :ensure t)
+
+;; Clojure IDE that rocks.
+(use-package cider
+  :pin melpa-stable
+  :ensure t)
+
+;; Intelligent auto-completion extension for Emacs. Required by ac-cider.
+(use-package auto-complete
+  :ensure t
+  :config
+  (ac-config-default))
+
+;; Auto-complete backend for CIDER.
+(use-package ac-cider
+  :ensure t)
+
+;; Collection of Clojure refactoring functions.
+(use-package clj-refactor
+  :pin melpa-stable
+  :ensure t)
+
+;; --
+
 (use-package my-clojure
   :load-path "modules/"
-  :defer 1)
+  :defer 2)
 
 (use-package my-smartparens
   :load-path "modules/"
-  :defer 2)
+  :defer 3)
 
 ;; EOF
