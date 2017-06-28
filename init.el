@@ -161,6 +161,7 @@
 (global-set-key (kbd "C-8") 'move-cursor-previous-pane)
 (global-set-key (kbd "C-9") 'move-cursor-next-pane)
 ;;(global-set-key (kbd "C-S-f") 'projectile-ag) ; Search for symbol within project.
+(global-set-key (kbd "C-/") 'delete-trailing-whitespace)
 
 ;; SCSS mode.
 (use-package scss-mode
