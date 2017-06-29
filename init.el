@@ -263,7 +263,7 @@
   :ensure t
   :init
   (global-flycheck-mode)
-  (setq-default flycheck-disabled-checkers '(emacs-lisp emacs-lisp-checkdoc)))
+  (setq-default flycheck-disabled-checkers '(emacs-lisp emacs-lisp-checkdoc ruby-reek)))
 
 ;; Provides a REPL buffer connected to a Ruby subprocess.
 ;; C-x C-q : Switch the compilation buffer mode for interactive debugging
