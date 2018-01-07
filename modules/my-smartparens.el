@@ -175,4 +175,4 @@ instead, and with a prefix argument, justify as well."
       (beginning-of-defun)
       (indent-sexp))))
 
-(provide 'setup-smartparens)
+(provide 'my-smartparens)
