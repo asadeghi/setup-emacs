@@ -154,9 +154,16 @@
   (if window-system
       (progn
         (set-frame-size (selected-frame) 140 45)
-        (if (and (> (x-display-pixel-width) 2000) (> (x-display-pixel-height) 1400))
-            (set-face-attribute 'default nil :height 150) ;; Cinema Display
-          (set-face-attribute 'default nil :height 105)))))
+        (cond
+         ;; 4K
+         ((and (> (x-display-pixel-width) 3800) (> (x-display-pixel-height) 2100))
+          (set-face-attribute 'default nil :height 90))
+         ;; Cinema Display
+         ((and (> (x-display-pixel-width) 2000) (> (x-display-pixel-height) 1400))
+          (set-face-attribute 'default nil :height 150))
+         ;; Default
+         (t
+          (set-face-attribute 'default nil :height 105))))))
 
 ;; Fontify current and future frames
 (fontify-frame nil)
