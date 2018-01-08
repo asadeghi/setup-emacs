@@ -62,7 +62,7 @@
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control) . nil)))
 (setq mouse-wheel-progressive-speed nil)
 
-;; Nice scrolling
+;; Nice scrolling.
 (setq scroll-margin 0
       scroll-conservatively 100000
       scroll-preserve-screen-position 1)
@@ -82,16 +82,16 @@
               (revert-buffer-function " %b"
               ("%b - Dir:  " default-directory)))))))
 
-;; Coding system
+;; Coding system.
 (prefer-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 
-;; Replace buffer-menu with ibuffer
+;; Replace buffer-menu with ibuffer.
 (global-set-key (kbd "C-x C-b") #'ibuffer)
 
-;; Easier window navigation
+;; Easier window navigation.
 (defun move-cursor-next-pane ()
   "Move cursor to the next pane."
   (interactive)
@@ -140,11 +140,6 @@
 ;; Auto Completion.
 (setq tab-always-indent 'complete)
 (add-to-list 'completion-styles 'initials t)
-
-;; Ido.
-(setq ido-enable-flex-matching t)
-(setq ido-everywhere t)
-(ido-mode 1)
 
 ;; Set Command key to Meta on MacOS.
 (when (eq system-type 'darwin)
@@ -209,6 +204,8 @@
   :ensure t
   :init
   (add-hook 'after-init-hook 'projectile-global-mode)
+  :config
+  (setq projectile-completion-system 'ivy)
   :bind (("<f5>" . projectile-find-file)
          ("C-<f5>" . projectile-toggle-between-implementation-and-test)
          ("C-S-f" . projectile-ag)))
@@ -333,6 +330,35 @@
 (use-package clj-refactor
   :pin melpa-stable
   :ensure t)
+
+(use-package ivy
+  :ensure t
+  :config
+  (ivy-mode 1)
+  (setq ivy-use-virtual-buffers t)
+  (setq enable-recursive-minibuffers t)
+  (global-set-key (kbd "C-c C-r") 'ivy-resume))
+
+(use-package swiper
+  :ensure t
+  :config
+  (global-set-key "\C-s" 'swiper))
+
+(use-package counsel
+  :ensure t
+  :config
+  (global-set-key (kbd "M-x") 'counsel-M-x)
+  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+;;  (global-set-key (kbd "<f1> f") 'counsel-describe-function)
+;;  (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+;;  (global-set-key (kbd "<f1> l") 'counsel-find-library)
+;;  (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+;;  (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+  (global-set-key (kbd "C-c g") 'counsel-git)
+  (global-set-key (kbd "C-c j") 'counsel-git-grep)
+  (global-set-key (kbd "C-c k") 'counsel-ag)
+  (global-set-key (kbd "C-x l") 'counsel-locate)
+  (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history))
 
 ;; --
 
