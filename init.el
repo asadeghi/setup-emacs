@@ -237,25 +237,6 @@
   (setq ag-reuse-buffers 't)
   (setq ag-arguments (list "--smart-case" "--column")))
 
-;; Configure org-present for presentation of slides using Emacs.
-;; M-x org-present
-;; C-c C-q    (org-present-quit)
-(use-package org-present
-  :ensure t
-  :init
-  (add-hook 'org-present-mode-hook
-            (lambda ()
-              (org-present-big)
-              (org-display-inline-images)
-              (org-present-hide-cursor)
-              (org-present-read-only)))
-  (add-hook 'org-present-mode-quit-hook
-            (lambda ()
-              (org-present-small)
-              (org-remove-inline-images)
-              (org-present-show-cursor)
-              (org-present-read-write))))
-
 ;; Make Emacs use the $PATH set up by the user's shell.
 (use-package exec-path-from-shell
   :if (memq window-system '(mac ns))
