@@ -343,6 +343,10 @@
 
 ;; --
 
+(use-package ps-ccrypt
+  :load-path "modules/"
+  :defer 2)
+
 (use-package my-clojure
   :load-path "modules/"
   :defer 2)
