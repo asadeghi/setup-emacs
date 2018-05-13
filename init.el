@@ -154,8 +154,8 @@
 ;; Useful keybindings.
 (global-set-key [f1] (lambda () (interactive) (switch-to-buffer "*tmpscratch*")))
 (global-set-key [f2] (lambda () (interactive) (find-file "~/notes.txt")))
-(global-set-key [f3] 'query-replace)
-(global-set-key [f4] 'goto-line)
+(global-set-key [f3] nil)
+(global-set-key [f4] 'calc)
 ;;(global-set-key [f5] 'projectile-find-file) ; Open file within project.
 ;;(global-set-key (kbd "C-<f5>") 'projectile-toggle-between-implementation-and-test)
 (global-set-key [f6] 'start-kbd-macro)
@@ -169,6 +169,8 @@
 (global-set-key (kbd "C-9") 'move-cursor-next-pane)
 ;;(global-set-key (kbd "C-S-f") 'projectile-ag) ; Search for symbol within project.
 (global-set-key (kbd "C-/") 'delete-trailing-whitespace)
+(global-set-key "\M-\C-r" 'query-replace)
+(global-set-key "\M-g" 'goto-line)
 
 ;; SCSS mode.
 (use-package scss-mode
@@ -315,7 +317,7 @@
   :pin melpa-stable
   :ensure t)
 
-;; --
+;; -- Custom modules --
 
 (use-package ps-ccrypt
   :load-path "modules/"
